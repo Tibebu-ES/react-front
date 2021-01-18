@@ -9,7 +9,8 @@ class ListEmployeeComponent extends Component {
 
         }
         //bind event
-        this.addEmployee = this.addEmployee.bind(this);
+        this.addEmployeeHandler = this.addEmployeeHandler.bind(this);
+        this.updateEmployeeHandler = this.updateEmployeeHandler.bind(this);
     }
 
 
@@ -19,9 +20,13 @@ class ListEmployeeComponent extends Component {
         });
     }
 
-    addEmployee(){
+    addEmployeeHandler(){
         this.props.history.push("/add-employee");
 
+    }
+
+    updateEmployeeHandler(id){
+        this.props.history.push(`/update-employee/${id}`);
     }
 
     render() {
@@ -29,7 +34,7 @@ class ListEmployeeComponent extends Component {
             <div>
                <h2 className="text-center">Employees List</h2> 
                 <div className = "row">
-                    <button className ="btn btn-primary" onClick= {this.addEmployee}> Add Employee</button>
+                    <button className ="btn btn-primary" onClick= {this.addEmployeeHandler}> Add Employee</button>
                 </div>
 
                <div className="row">
@@ -51,7 +56,7 @@ class ListEmployeeComponent extends Component {
                                         <td> {employee.firstName}</td>
                                         <td> {employee.lastName}</td>
                                         <td> {employee.emailId}</td>
-                                       
+                                        <td> <button className="btn btn-info" onClick={()=> this.updateEmployeeHandler(employee.id)}>Update</button> </td>
                                     </tr>
                                 )
 
