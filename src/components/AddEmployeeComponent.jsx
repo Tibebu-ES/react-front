@@ -5,6 +5,7 @@ class AddEmployeeComponent extends Component {
     constructor(props){
         super(props)
         this.state = {
+           id: this.props.match.params.id,
            firstName: '',
            lastName: '',
            emailId: ''
@@ -16,6 +17,21 @@ class AddEmployeeComponent extends Component {
         this.saveEmployee = this.saveEmployee.bind(this);
     }
 
+    componentDidMount(){
+       if(this.state.id==-1){
+           return
+       }else{
+        EmployeeService.getEmployeeById(this.state.id).then( (res) => {
+            let employee = res.data;
+            this.setState({
+                firstName: employee.firstName,
+                lastName: employee.lastName,
+                emailId: employee.emailId
+            });
+        });
+       }
+    }
+
     changeFirstNameHandler = (event) =>{
         this.setState({ firstName: event.target.value});
     }
@@ -25,17 +41,29 @@ class AddEmployeeComponent extends Component {
     changeEmailIdHandler = (event) =>{
         this.setState({ emailId: event.target.value});
     }
+
     saveEmployee = (e) => {
         e.preventDefault();
         let employee = {firstName: this.state.firstName, lastName: this.state.lastName,emailId: this.state.emailId};
         console.log('employee =>' + JSON.stringify(employee));
-
-        EmployeeService.addEmployee(employee).then((res) => {
-            this.props.history.push("/employees");
-        });
+        if(this.state.id==-1){
+            EmployeeService.addEmployee(employee).then((res) => {
+                this.props.history.push("/employees");
+            });
+        }else{
+            EmployeeService.updateEmployee(this.state.id,employee).then( (res) => {
+                this.props.history.push("/employees");
+            });
+        }
+ 
     }
+
     cancel(){
         this.props.history.push("/employees");
+    }
+
+    getTitle(){
+        return (this.state.id == -1) ? "Add Employee" : "Update Employee"; 
     }
 
     render() {
@@ -44,7 +72,7 @@ class AddEmployeeComponent extends Component {
                <div className= "container">
                     <div className= "row">
                         <div className ="card col-md-6 offset-md-3 offset-md-3">
-                            <h3 className = "text-center">Add Employee</h3>
+                            <h3 className = "text-center">{this.getTitle()}</h3>
                             <div className = "card-body">
                                 <form>
                                     <div className="form-group">
