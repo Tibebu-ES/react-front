@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import EmployeeService from '../services/EmployeeService';
 
 class AddEmployeeComponent extends Component {
     constructor(props){
@@ -28,6 +29,10 @@ class AddEmployeeComponent extends Component {
         e.preventDefault();
         let employee = {firstName: this.state.firstName, lastName: this.state.lastName,emailId: this.state.emailId};
         console.log('employee =>' + JSON.stringify(employee));
+
+        EmployeeService.addEmployee(employee).then((res) => {
+            this.props.history.push("/employees");
+        });
     }
     cancel(){
         this.props.history.push("/employees");
