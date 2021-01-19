@@ -11,6 +11,7 @@ class ListEmployeeComponent extends Component {
         //bind event
         this.addEmployeeHandler = this.addEmployeeHandler.bind(this);
         this.updateEmployeeHandler = this.updateEmployeeHandler.bind(this);
+        this.deleteEmployeeHandler = this.deleteEmployeeHandler.bind(this);
     }
 
 
@@ -27,6 +28,20 @@ class ListEmployeeComponent extends Component {
 
     updateEmployeeHandler(id){
         this.props.history.push(`/add-employee/${id}`);
+    }
+
+    deleteEmployeeHandler(id){
+        EmployeeService.deleteEmployee(id).then((res) => {
+            this.refreshEmployeeList();
+
+        });
+
+    }
+
+    refreshEmployeeList(){
+        EmployeeService.getEmployees().then((res) => {
+            this.setState({ employees: res.data });
+        });     
     }
 
     render() {
@@ -56,7 +71,10 @@ class ListEmployeeComponent extends Component {
                                         <td> {employee.firstName}</td>
                                         <td> {employee.lastName}</td>
                                         <td> {employee.emailId}</td>
-                                        <td> <button className="btn btn-info" onClick={()=> this.updateEmployeeHandler(employee.id)}>Update</button> </td>
+                                        <td> 
+                                            <button className="btn btn-info" onClick={()=> this.updateEmployeeHandler(employee.id)}>Update</button> 
+                                            <button style ={{marginLeft: "10px"}} className="btn btn-danger" onClick={()=> this.deleteEmployeeHandler(employee.id)}>Delete</button> 
+                                        </td>
                                     </tr>
                                 )
 
