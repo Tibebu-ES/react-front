@@ -12,6 +12,7 @@ class ListEmployeeComponent extends Component {
         this.addEmployeeHandler = this.addEmployeeHandler.bind(this);
         this.updateEmployeeHandler = this.updateEmployeeHandler.bind(this);
         this.deleteEmployeeHandler = this.deleteEmployeeHandler.bind(this);
+        this.viewEmployeeHandler = this.viewEmployeeHandler.bind(this);
     }
 
 
@@ -37,6 +38,10 @@ class ListEmployeeComponent extends Component {
 
         });
 
+    }
+
+    viewEmployeeHandler(id){
+        this.props.history.push(`/view-employee/${id}`);
     }
 
     render() {
@@ -69,6 +74,7 @@ class ListEmployeeComponent extends Component {
                                         <td> 
                                             <button className="btn btn-info" onClick={()=> this.updateEmployeeHandler(employee.id)}>Update</button> 
                                             <button style ={{marginLeft: "10px"}} className="btn btn-danger" onClick={()=> this.deleteEmployeeHandler(employee.id)}>Delete</button> 
+                                            <button style ={{marginLeft: "10px"}} className="btn btn-info" onClick={()=> this.viewEmployeeHandler(employee.id)}>View</button> 
                                         </td>
                                     </tr>
                                 )
