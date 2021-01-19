@@ -32,16 +32,11 @@ class ListEmployeeComponent extends Component {
 
     deleteEmployeeHandler(id){
         EmployeeService.deleteEmployee(id).then((res) => {
-            this.refreshEmployeeList();
+            //filter employees
+            this.setState({employees: this.state.employees.filter(employee => employee.id!==id)});
 
         });
 
-    }
-
-    refreshEmployeeList(){
-        EmployeeService.getEmployees().then((res) => {
-            this.setState({ employees: res.data });
-        });     
     }
 
     render() {
